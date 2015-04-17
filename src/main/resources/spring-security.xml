@@ -11,22 +11,39 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
      http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-<!-- 测试用户 -->
-	<security:authentication-manager>
-		<security:authentication-provider>
-			<security:user-service>
-				<security:user name="jimi" password="jimispassword"
-					authorities="ROLE_USER, ROLE_ADMIN" />
-				<security:user name="bob" password="bobspassword"
-					authorities="ROLE_USER" />
-			</security:user-service>
-		</security:authentication-provider>
-	</security:authentication-manager>
+     
+     <!-- spring security 不过滤静态资源及登录页 -->
+     <security:http pattern="/js/**" security="none" />
+     <security:http pattern="/css/**" security="none" />
+     <security:http pattern="/images/**" security="none" />
+     <security:http pattern="/login.jsp" security="none" />
+
 
 	<security:http auto-config='true'>
-		<security:intercept-url pattern="/login.jsp*"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/**" access="ROLE_USER" />
-		<security:form-login />
-	</security:http>     
+		<!-- login-page:登录页;authentication-failure-url:登录失败跳转页;default-target-url:登录成功跳转页-->
+		<security:form-login login-page="/login.jsp" authentication-failure-url="/login.jsp" default-target-url="/index.jsp" username-parameter="name" password-parameter="password" login-processing-url="/security_login"/>
+		<!-- invalidate-session:退出时是否销毁Session;logout-success-url：退出后跳转的URL;logout-url:退出系统的url-->
+		<security:logout invalidate-session="true" logout-success-url="/index.jsp" logout-url="/security_logout" delete-cookies="JSESSIONID"/>
+		<!-- max-sessions:允许账号登录的次数;error-if-maximum-exceeded[true]:拒绝第二次登录,[false]用户第二次登录时，前一次的登录信息都被清空 -->
+		<security:session-management>
+			<security:concurrency-control error-if-maximum-exceeded="false" max-sessions="1"/>
+		</security:session-management>
+		<!-- 记住密码  2周-->
+		<security:remember-me token-validity-seconds="1209600" remember-me-parameter="security_rememberme"/>
+	</security:http>   
+	
+	
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="AuthenticationUserDetailsService">
+			<security:password-encoder ref="passwordEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+	<bean id="AuthenticationUserDetailsService" class="com.maximus.service.AuthenticationUserDetailsService" />
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/classes/messages_zh_CN" />
+	</bean>
 </beans>

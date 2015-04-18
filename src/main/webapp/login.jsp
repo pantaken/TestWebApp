@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,6 +18,7 @@
 <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 <center>
 ${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message} 
 <div class="panel panel-default" style="width: 400px;">
@@ -35,7 +36,7 @@ ${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}
 			</div>	
 			
 			<div class="form-group">
-				<input type="checkbox" name="security_rememberme" checked="checked" value="true"> 记住密码(2周)
+				<input type="checkbox" name="security_rememberme" checked="checked" value="true"> 自动登录
 			</div>
 			<div class="form-group">
 				<label class="col-xs-1 control-label"></label>

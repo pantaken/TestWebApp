@@ -22,7 +22,7 @@
 	<security:http auto-config='true'>
 		<security:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/**" access="ROLE_USER" />
-		<!-- login-page:登录页;authentication-failure-url:登录失败跳转页;default-target-url:登录成功跳转页-->
+		<!-- login-page:登录页;authentication-failure-url:登录失败跳转页;default-target-url:登录成功跳转页;authentication-success-handler-ref:登录成功后的处理程序-->
 		<security:form-login login-page="/login.jsp" authentication-failure-url="/login.jsp" default-target-url="/index.jsp" username-parameter="name" password-parameter="password" login-processing-url="/security_login"/>
 		<!-- invalidate-session:退出时是否销毁Session;logout-success-url：退出后跳转的URL;logout-url:退出系统的url-->
 		<security:logout invalidate-session="true" logout-success-url="/index.jsp" logout-url="/security_logout" delete-cookies="JSESSIONID"/>
@@ -31,7 +31,8 @@
 			<security:concurrency-control error-if-maximum-exceeded="false" max-sessions="1"/>
 		</security:session-management>
 		<!-- 记住密码  2周-->
-		<security:remember-me token-validity-seconds="1209600" remember-me-parameter="security_rememberme"/>
+		<!--  data-source-ref="dataSource" -->
+		<security:remember-me token-validity-seconds="1209600" remember-me-parameter="security_rememberme" data-source-ref="dataSource"/>
 	</security:http>   
 	
 	
@@ -45,5 +46,12 @@
 	<bean id="AuthenticationUserDetailsService" class="com.maximus.service.AuthenticationUserDetailsService" />
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="/WEB-INF/classes/messages_zh_CN" />
+	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/spring_security?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
 	</bean>
 </beans>

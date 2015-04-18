@@ -18,7 +18,24 @@
 <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 Welcome Maven project！<h3><sec:authentication property="name"/></h3>
+<!-- 
+ifAllGranted——是一个由逗号分隔的权限列表，用户必须拥有所有列出的权限时显示； 
+
+ifAnyGranted——是一个由逗号分隔的权限列表，用户必须至少拥有其中的一个权限时才能显示； 
+
+ifNotGranted——是一个由逗号分隔的权限列表，用户未拥有所有列出的权限时才能显示。
+ -->
+<sec:authorize ifNotGranted="ROLE_MANAGER">
+<li><a href="#">学生管理</a></li>
+</sec:authorize>
+<sec:authorize ifAnyGranted="ROLE_USER">
+<li><a href="#">系统管理</a></li>
+</sec:authorize>
+<sec:authorize ifAllGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
+<li><a href="#">密码修改</a></li>
+</sec:authorize>
 <a href="${pageContext.request.contextPath}/security_logout"><button class="btn btn-default">退出</button></a>
 </body>
 </html>

@@ -28,6 +28,46 @@
 
 <mvc:annotation-driven/>
 <context:annotation-config />
-<context:component-scan base-package="com.maximus.controller" />
+<context:component-scan base-package="com.maximus.controller,com.maximus.service,com.maximus.dao.impl" />
 
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" lazy-init="false" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/spring_security?useUnicode=true&amp;characterEncoding=utf-8"/>
+		<property name="user" value="root"/>
+		<property name="password" value="123456"/>
+		<property name="minPoolSize" value="2"/>
+		<property name="maxPoolSize" value="50"/>
+		<property name="maxIdleTime" value="25000"/>
+		<property name="acquireIncrement" value="2"/>
+		<property name="idleConnectionTestPeriod" value="18000"/>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.maximus.dao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="simpleJdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="queryHelper" class="com.maximus.db.QueryHelper">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="simpleJdbcTemplate" ref="simpleJdbcTemplate"/>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+	</bean>	
 </beans>

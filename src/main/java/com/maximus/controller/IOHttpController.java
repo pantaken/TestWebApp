@@ -25,7 +25,7 @@ public class IOHttpController {
 	@RequestMapping(value = {"/upload"}, method = RequestMethod.POST)
 	public Map<String, Object> upload(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("upload a file...");
-		if (IOHttp.upload(request)) {
+		if (IOHttp.upload(request) != null) {
 			map.put("success", true);
 		} else {
 			map.put("success", false);

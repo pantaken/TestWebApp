@@ -100,5 +100,42 @@
         <artifactId>jackson-mapper-asl</artifactId>
         <version>1.7.1</version>
     </dependency>
-  </dependencies>  
+    <!-- net.sf.json-lib -->
+    <dependency>
+		<groupId>net.sf.json-lib</groupId>
+		<artifactId>json-lib</artifactId>
+		<version>2.1</version>
+		<classifier>jdk15</classifier>
+	</dependency>
+	<!-- Docx4j -->
+	<dependency>
+		<groupId>org.docx4j</groupId>
+		<artifactId>docx4j</artifactId>
+		<version>3.0.0</version>
+	</dependency>
+	<!-- c3p0 -->
+	<dependency>
+		<groupId>c3p0</groupId>
+		<artifactId>c3p0</artifactId>
+		<version>0.9.1</version>
+	</dependency>
+	<!-- mybatis-spring -->
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>1.2.2</version>
+	</dependency>	
+	<!-- mybatis -->
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis</artifactId>
+		<version>3.2.8</version>
+	</dependency>
+	<!-- jstl -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+	</dependency>		
+  </dependencies>
 </project>

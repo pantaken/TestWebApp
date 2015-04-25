@@ -13,15 +13,19 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
-import org.springframework.web.util.ServletContextPropertyUtils;
-import org.springframework.web.util.WebUtils;
 
 public class IOHttp {
 
 
-	public static boolean upload(HttpServletRequest request) {
+	/**
+	 * 文件上传成功则返回文件名，否则返回null
+	 * @param request
+	 * @return
+	 */
+	public static String upload(HttpServletRequest request) {
 		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		String fileName = "";
 		try {
 			if (isMultipart) {
 				FileItemFactory factory = new DiskFileItemFactory();
@@ -38,19 +42,20 @@ public class IOHttp {
 						 */
 						String fieldName = item.getFieldName();
 						if ("file".equals(fieldName)) {
-							String fileName = item.getName();
-							FileUtils.copyInputStreamToFile(item.getInputStream(), new File(request.getRealPath("/") +"resources/" + fileName));						
+							fileName = item.getName();
+							FileUtils.copyInputStreamToFile(item.getInputStream(), 
+									new File(ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR + fileName));						
 						}
 					}
 				}
 			}			
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		} catch (FileUploadException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
-		return true;
+		return fileName;
 	}
 }

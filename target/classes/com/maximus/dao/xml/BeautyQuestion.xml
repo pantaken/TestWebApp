@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maximus.dao.IOfficeWordParserDao">
+
+	<resultMap type="com.maximus.bean.BeautyQuestion" id="map1">
+		<result column="content" property="content"/>
+		<result column="type" property="type"/>
+		<result column="selectA" property="a"/>
+		<result column="selectB" property="b"/>
+		<result column="selectC" property="c"/>
+		<result column="selectD" property="d"/>
+		<result column="img" property="img"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="Object">
+		INSERT INTO pub_question_content(content,`type`) VALUES (#{content},#{type})
+	</insert>
+	
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO pub_question_content(content,`type`,selectA,selectB,selectC,selectD,img) VALUES 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.content},#{item.type},#{item.a},#{item.b},#{item.c},#{item.d},#{item.img})
+		</foreach>
+	</insert>
+	
+	<select id="select" resultMap="map1">
+		SELECT content,`type`,selectA,selectB,selectC,selectD,img FROM pub_question_content
+	</select>
+</mapper>
+ 

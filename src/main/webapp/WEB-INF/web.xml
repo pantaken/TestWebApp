@@ -32,7 +32,7 @@
 	</param-value>
 </context-param>
 <listener>
-	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	<listener-class>com.maximus.listener.ApplicationContextLoaderListener</listener-class>
 </listener>
 <servlet>
 	<servlet-name>spring</servlet-name>

@@ -23,7 +23,7 @@ $(function() {
 	$("#fileupload").change(function(){
 		var $btn = $("#fileuploadbtn").button('loading');
 		var fileObject = {};
-		var actionURL = "${pageContext.request.contextPath}/upload";
+		var actionURL = "${pageContext.request.contextPath}/beautyParser";
 		try {
 			fileObject = document.getElementById("fileupload").files[0];	
 		} catch (e) {
@@ -43,11 +43,25 @@ $(function() {
 			if (xhr.status == 200) {
 				var jsonMsg = eval("(" + xhr.responseText + ")");
 				if (jsonMsg.success) {
-					$('#picModel').modal('toggle');
+					//$('#picModel').modal('toggle');
 				}
 			}
 		};
 		xhr.send(form);
+	});
+	
+	$("#createTestLibraryBtn").on('click',function(){
+		$("#createTestLibrary").addClass('selected');
+		$("#privateProfile").removeClass('selected');
+		$("#privateProfile").hide();
+		$("#createTestLibrary").show();
+	});
+	
+	$("#privateProfileBtn").on('click', function(){
+		$("#privateProfile").addClass('selected');
+		$("#createTestLibrary").removeClass('selected');
+		$("#privateProfile").show();
+		$("#createTestLibrary").hide();
 	});
 });
 </script>
@@ -68,7 +82,7 @@ $(function() {
 		<!-- menu -->
         <div id="navbar">
           <ul class="nav navbar-nav">
-            <li><a href="#">组题</a></li>
+            <li><a href="${pageContext.request.contextPath}/assembletestpaper">组题</a></li>
             <li><a href="#about">训练</a></li>
             <li><a href="#contact">博客</a></li>
             <li class="dropdown">
@@ -102,16 +116,17 @@ $(function() {
       </div>
 </nav>
     
-    
+<!-- container -->    
 <div class="container">
+<!-- left -->
 <div class="col-xs-3">
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">个人设置</h3>
   </div>
 		<div class="list-group">
-		  <a href="#" class="list-group-item selected">简介</a>
-		  <a href="#" class="list-group-item">Morbi leo risus</a>
+		  <a href="#" class="list-group-item selected" id="privateProfileBtn">个人简介</a>
+		  <a href="#" class="list-group-item" id="createTestLibraryBtn">创建题库</a>
 		  <a href="#" class="list-group-item">Porta ac consectetur ac</a>
 		  <a href="#" class="list-group-item">Vestibulum at eros</a>
 		  <a href="#" class="list-group-item">Vestibulum at eros</a>
@@ -123,19 +138,34 @@ $(function() {
 		  <a href="#" class="list-group-item">Vestibulum at eros</a>
 		</div>
 </div>
-</div> 
-<div class="col-xs-9">
+</div><!-- left end -->
+<!-- right --> 
+<div class="col-xs-9" id="privateProfile">
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">公开简介</h3>
+    <h3 class="panel-title">个人简介</h3>
   </div>
   <div class="panel-body">
-    <button class="btn btn-default" name="fileuploadbtn" id="fileuploadbtn" data-loading-text="上传中..." autocomplete="off">上传图片</button>
+    <button class="btn btn-default" name="imageuploadbtn" id="imageuploadbtn" data-loading-text="上传中..." autocomplete="off">上传图片</button>
+	<input type="file" id="imageupload" name="imageupload" style="display: none;">
+  </div>		
+</div>
+</div><!-- right end -->
+
+<!-- right -->
+<div class="col-xs-9" id="createTestLibrary" style="display: none;">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">创建题库</h3>
+  </div>
+  <div class="panel-body">
+    <button class="btn btn-default" name="fileuploadbtn" id="fileuploadbtn" data-loading-text="上传中..." autocomplete="off">上传文件</button>
 	<input type="file" id="fileupload" name="fileupload" style="display: none;">
   </div>		
 </div>
-</div>
-</div>   
+</div><!-- right end -->
+
+</div><!-- container end -->   
 
 <!-- Modal -->
 <div class="modal fade" id="picModel" tabindex="-1" role="dialog" aria-labelledby="picLabel" aria-hidden="true">
@@ -155,6 +185,7 @@ $(function() {
       </div>
     </div>
   </div>
-</div>
+</div><!-- Model end -->
+
 </body>
 </html>

@@ -24,6 +24,12 @@ public class OfficeWordParserController {
 	@Autowired
 	private OfficeWordParserService officeWordParserService;
 	
+	/**
+	 * 完美公式试题解析
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = "/beautyParser", method = RequestMethod.POST)
 	public ModelAndView beautyParser(HttpServletRequest request, HttpServletResponse response) {
 		String fileName = IOHttp.upload(request);
@@ -37,6 +43,28 @@ public class OfficeWordParserController {
 		} catch (Docx4JException e) {
 			e.printStackTrace();
 			logger.error("when beauty parser word occurred Exception : " + e);
+		}
+		return null;
+	}
+	/**
+	 * 混合图片试题解析
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/mixParser", method = RequestMethod.POST)
+	public ModelAndView mixParser(HttpServletRequest request, HttpServletResponse response) {
+		String fileName = IOHttp.upload(request);
+		String filePath = ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR;
+		if (fileName != null)
+			filePath += fileName;
+		else 
+			return null;
+		try {
+			officeWordParserService.mixprocess(filePath);
+		} catch (Docx4JException e) {
+			e.printStackTrace();
+			logger.error("when mix parser word occurred Exception : " + e);
 		}
 		return null;
 	}

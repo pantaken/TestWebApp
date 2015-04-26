@@ -1,0 +1,1 @@
+msmf2img.dll 放在%JRE%/bin下 项目必须部署在window server上  且服务器要求在.net framework4.0环境以上

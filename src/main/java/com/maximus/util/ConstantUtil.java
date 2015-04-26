@@ -36,6 +36,7 @@ public class ConstantUtil {
 	private String contextPath;
 	private String serverInfo;
 	private ApplicationContext ctx;
+	private String basePath;
 	public String getContextName() {
 		return contextName;
 	}
@@ -65,5 +66,8 @@ public class ConstantUtil {
 	}
 	public void setCtx(ApplicationContext ctx) {
 		this.ctx = ctx;
+	}
+	public String getBasePath() {
+		return "http://localhost";
 	}
 }

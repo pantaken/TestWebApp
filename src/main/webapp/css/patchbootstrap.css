@@ -23,6 +23,7 @@ a.selected {
 .navbar-default {
 	background-color: #f5f5f5;
 }
+.navbar-default .navbar-brand > a,
 .navbar-default .navbar-nav > li > a {
 	color: #000;
 }
@@ -69,3 +70,53 @@ a.selected {
 	border:7px solid transparent;
 	border-bottom-color:#fff
 }
+span.fieldtip {
+  height: 24px;
+  font-size: 12px;
+  text-align: left;
+  display: block;
+  overflow: hidden;
+  opacity: 1;
+  padding: 0;
+  padding: 5px 15px;
+  margin-top: -1px;
+  border: 0px solid #ccc;
+  border-top: none 0px;
+  background: #f6f6f6;
+}
+.test-list-group-item {
+  border-bottom: 1px solid #fff;
+  border-top: 1px solid #ddd;
+}
+.tool {
+	color: #000;
+	margin-right: 15px;
+}
+.subnav-search-icon{
+  position: absolute;
+  top: 11px;
+  display: block;
+  width: 30px;
+  height: 28px;
+  line-height: 28px;
+  color: #ccc;
+  text-align: center;
+}
+.subnav-search-icon:before {
+  line-height: 28px;	
+}
+
+.test_content {
+	font-weight: bolder;	
+}
+.test_callout {
+	padding: 5px;
+	margin: 5px 0;
+	border: 1px solid #eee;
+	border-left-width: 2px;
+	border-radius:3px;
+}
+.test_callout_red {
+	border-left-color:#ce4844;
+}
+img{ vertical-align:middle;padding-bottom:5px; }

@@ -25,6 +25,7 @@
 <mvc:resources location="/css/" mapping="/css/**"/>
 <mvc:resources location="/fonts/" mapping="/fonts/**"/>
 <mvc:resources location="/images/" mapping="/images/**"/>
+<mvc:resources location="/resources/" mapping="/resources/**"/>
 
 <mvc:annotation-driven/>
 <context:annotation-config />
@@ -64,6 +65,12 @@
 		<property name="simpleJdbcTemplate" ref="simpleJdbcTemplate"/>
 	</bean>
 	
+	<bean id="beautyOutputWord" class="com.maximus.util.BeautyOutputWord">
+		<property name="queryHelper" ref="queryHelper" />
+	</bean>
+	<bean id="mixOutputWord" class="com.maximus.util.MixOutputWord">
+		<property name="queryHelper" ref="queryHelper" />
+	</bean>	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"/>
 		<property name="suffix" value=".jsp"/>

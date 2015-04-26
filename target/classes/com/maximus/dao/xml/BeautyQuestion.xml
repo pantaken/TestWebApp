@@ -3,6 +3,7 @@
 <mapper namespace="com.maximus.dao.IOfficeWordParserDao">
 
 	<resultMap type="com.maximus.bean.BeautyQuestion" id="map1">
+		<result column="id" property="id"/>
 		<result column="content" property="content"/>
 		<result column="type" property="type"/>
 		<result column="selectA" property="a"/>
@@ -24,7 +25,7 @@
 	</insert>
 	
 	<select id="select" resultMap="map1">
-		SELECT content,`type`,selectA,selectB,selectC,selectD,img FROM pub_question_content
+		SELECT id, content,`type`,selectA,selectB,selectC,selectD,img FROM pub_question_content
 	</select>
 </mapper>
  

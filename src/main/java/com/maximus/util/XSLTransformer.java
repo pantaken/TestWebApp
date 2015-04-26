@@ -18,10 +18,19 @@ public class XSLTransformer {
 	private static final String UTF8 = "utf-8";
 	private static final String GBK = "gb2312";
 	private static final String OMML_NAMESPACE = " xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"";
+	
+	private final static String OMML2MML = "OMML2MML";
+	private final static String MML2OMML = "MML2OMML";
 
 	
-	private static InputStream xmlString2InputStream(String xmlString) throws UnsupportedEncodingException {
-		return new ByteArrayInputStream(xmlString.getBytes(UTF8));
+	private static InputStream xmlString2InputStream(String xmlString, String translateType) throws UnsupportedEncodingException {
+		if (OMML2MML.equals(translateType)) {
+			return new ByteArrayInputStream(xmlString.getBytes(UTF8));
+		} else if (MML2OMML.equals(translateType)) {
+			return new ByteArrayInputStream(xmlString.getBytes(GBK));
+		} else {
+			return null;
+		}
 	}
 	/**
 	 * 
@@ -37,7 +46,7 @@ public class XSLTransformer {
 		StringWriter sw = new StringWriter();
 		StreamResult result = new StreamResult(sw);		
 		
-		transformer.transform(new StreamSource(xmlString2InputStream(ommlString)), result);
+		transformer.transform(new StreamSource(xmlString2InputStream(ommlString, XSLTransformer.OMML2MML)), result);
 		String mmlString = sw.toString();
 		return mmlString.replace(OMML_NAMESPACE, "");
 	}
@@ -51,11 +60,11 @@ public class XSLTransformer {
 	public static String processMML2OMML(String mmlString) throws TransformerException, UnsupportedEncodingException {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Transformer transformer = tFactory.newTransformer(new StreamSource(XSLTransformer.class.getResourceAsStream("MML2OMML.XSL")));
-		transformer.setOutputProperty("encoding", UTF8);
+		transformer.setOutputProperty("encoding", GBK);
 		StringWriter sw = new StringWriter();
 		StreamResult result = new StreamResult(sw);
 		
-		transformer.transform(new StreamSource(xmlString2InputStream(mmlString)), result);
+		transformer.transform(new StreamSource(xmlString2InputStream(mmlString, XSLTransformer.MML2OMML)), result);
 		String ommlString = sw.toString();
 		return ommlString;
 	}

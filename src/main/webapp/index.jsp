@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +13,10 @@
  -->
 <link href="${pageContext.request.contextPath}/css/patchbootstrap-theme.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/non-responsive.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/octicons/octicons.css">
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/tt/global.js"></script>
 <script type="text/javascript">
 $(function() {
 	$('[data-tip="tooltip"]').tooltip({container: 'body', animation : false});
@@ -23,7 +26,8 @@ $(function() {
 	$("#fileupload").change(function(){
 		var $btn = $("#fileuploadbtn").button('loading');
 		var fileObject = {};
-		var actionURL = "${pageContext.request.contextPath}/beautyParser";
+		//var actionURL = "${pageContext.request.contextPath}/beautyParser";
+		var actionURL = "${pageContext.request.contextPath}/mixParser";
 		try {
 			fileObject = document.getElementById("fileupload").files[0];	
 		} catch (e) {
@@ -71,7 +75,7 @@ $(function() {
       <div class="container">
       	<!-- logo -->
         <div class="navbar-header" style="width: 58px; height: 50px;">
-          <div class="navbar-brand" style="font-size: 28px;padding: 10px 15px;"><span class="glyphicon glyphicon-education" aria-hidden="true"></span></div>
+          <div class="navbar-brand" style="font-size: 28px;padding: 10px 15px;"><a href="${pageContext.request.contextPath}/"><span class="glyphicon glyphicon-education"></span></a></div>
         </div>
         <!-- search -->
 		<form class="navbar-form navbar-left" role="search" style="padding-top: 3px;">
@@ -88,27 +92,25 @@ $(function() {
             <li class="dropdown">
               <a id="dLabel" href="#" class="dropdown-toggle" aria-haspopup="true" data-toggle="dropdown" role="button" aria-expanded="false">更多<span class="caret"></span></a>
               <ul id="moremenu" class="dropdown-menu" role="menu"  aria-labelledby="dLabel">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="${pageContext.request.contextPath}/mixedequation">混合公式</a></li>
+                <li><a href="#">标准公式</a></li>
                 <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="#">共享资源</a></li>
+                <li><a href="#">论坛</a></li>
               </ul>
             </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" data-tip="tooltip" data-placement="bottom" title="退出"><span class="glyphicon glyphicon-share-alt"></span></a></li>
+            <li><a href="${pageContext.request.contextPath}/security_logout" data-tip="tooltip" data-placement="bottom" title="退出"><span class="glyphicon glyphicon-share-alt"></span></a></li>
             <li><a href="#" data-tip="tooltip" data-placement="bottom" title="标签"><span class="glyphicon glyphicon-pushpin"></span></a></li>
             <li><a href="#" data-tip="tooltip" data-placement="bottom" title="设置"><span class="glyphicon glyphicon-cog"></span></a></li>
             <li><a href="#" data-tip="tooltip" data-placement="bottom" title="我的收藏"><span class="glyphicon glyphicon-star"></span></a></li>
             <li>
             	<a id="drop123" href="#" data-toggle="dropdown" aria-haspopup="true" data-tip="tooltip" data-placement="bottom" title="创建..." ><span class="glyphicon glyphicon-plus"></span><span class="caret"></span></a>
            		<ul id="createmenu" class="dropdown-menu" role="menu" aria-labelledby="drop123">
-                	<li role="presentation"><a href="#">Action</a></li>
-                	<li role="presentation"><a href="#">Another action</a></li>
+                	<li role="presentation"><a href="#"><span style="opacity:0.5;" class="octicon octicon-file-text"></span>      试卷</a></li>
+                	<li role="presentation"><a href="#"><span style="opacity:0.5;" class="octicon octicon-book"></span>      模板</a></li>
 				</ul>
             </li>
           </ul>
@@ -122,16 +124,29 @@ $(function() {
 <div class="col-xs-3">
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">个人设置</h3>
+    <h6 class="panel-title"><sec:authentication property="principal.username"/></h6>
   </div>
 		<div class="list-group">
 		  <a href="#" class="list-group-item selected" id="privateProfileBtn">个人简介</a>
 		  <a href="#" class="list-group-item" id="createTestLibraryBtn">创建题库</a>
-		  <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-		  <a href="#" class="list-group-item">Vestibulum at eros</a>
-		  <a href="#" class="list-group-item">Vestibulum at eros</a>
-		  <a href="#" class="list-group-item">Vestibulum at eros</a>
-		  <a href="#" class="list-group-item">Vestibulum at eros</a>
+		  <a href="#" class="list-group-item">创建模板</a>
+		  <a href="#" class="list-group-item">创建试卷</a>
+		<!-- 
+		ifAllGranted——是一个由逗号分隔的权限列表，用户必须拥有所有列出的权限时显示； 
+		
+		ifAnyGranted——是一个由逗号分隔的权限列表，用户必须至少拥有其中的一个权限时才能显示； 
+		
+		ifNotGranted——是一个由逗号分隔的权限列表，用户未拥有所有列出的权限时才能显示。
+		 -->		  
+		  <sec:authorize ifNotGranted="ROLE_MANAGER">
+		  <a href="#" class="list-group-item">无ROLE_MANAGER权限可见</a>
+		  </sec:authorize>
+		  <sec:authorize ifAnyGranted="ROLE_USER">
+		  <a href="#" class="list-group-item">有ROLE_USER权限可见</a>
+		  </sec:authorize>
+		  <sec:authorize ifAllGranted="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER">
+		  <a href="#" class="list-group-item">有ROLE_USER,ROLE_ADMIN,ROLE_MANAGER权限可见</a>
+		  </sec:authorize>
 		  <a href="#" class="list-group-item">Vestibulum at eros</a>
 		  <a href="#" class="list-group-item">Vestibulum at eros</a>
 		  <a href="#" class="list-group-item">Vestibulum at eros</a>

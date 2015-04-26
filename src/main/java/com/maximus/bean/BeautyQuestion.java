@@ -2,6 +2,7 @@ package com.maximus.bean;
 
 public class BeautyQuestion {
 
+	private int id;
 	/**
 	 * 试题内容
 	 */
@@ -18,6 +19,13 @@ public class BeautyQuestion {
 	private String c;
 	private String d;
 	private String img;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getContent() {
 		return content;
 	}

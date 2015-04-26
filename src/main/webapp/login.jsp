@@ -22,7 +22,7 @@
 <center>
 ${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message} 
 <div class="panel panel-default" style="width: 400px;">
-  <div class="panel-heading">【Spring Security Study】登录</div>
+  <div class="panel-heading">登录</div>
 <div class="panel-body form-horizontal">
 	<form action="${pageContext.request.contextPath}/security_login" method="post">
 			<div class="form-group" id="namediv">

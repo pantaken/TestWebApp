@@ -93,7 +93,7 @@ $(function() {
               <a id="dLabel" href="#" class="dropdown-toggle" aria-haspopup="true" data-toggle="dropdown" role="button" aria-expanded="false">更多<span class="caret"></span></a>
               <ul id="moremenu" class="dropdown-menu" role="menu"  aria-labelledby="dLabel">
                 <li><a href="${pageContext.request.contextPath}/mixedequation">混合公式</a></li>
-                <li><a href="#">标准公式</a></li>
+                <li><a href="${pageContext.request.contextPath}/standardequation"">标准公式</a></li>
                 <li class="divider"></li>
                 <li><a href="#">共享资源</a></li>
                 <li><a href="#">论坛</a></li>

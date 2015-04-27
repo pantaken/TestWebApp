@@ -101,4 +101,9 @@ public class AssembleTestController {
 		maps.put("questionCommons", lists);
 		return new ModelAndView("mixedequation", maps);
 	}
+	
+	@RequestMapping(value = "/standardequation", method = RequestMethod.GET)
+	public ModelAndView standardequation(HttpServletRequest request, HttpServletResponse response) {
+		return new ModelAndView("standardequation");
+	}
 }

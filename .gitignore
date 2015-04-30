@@ -57,3 +57,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.classpath
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.wst.common.component
+target/m2e-wtp/web-resources/META-INF/maven/com.maximus/TestWebApp/pom.properties
+target/m2e-wtp/web-resources/META-INF/maven/com.maximus/TestWebApp/pom.xml

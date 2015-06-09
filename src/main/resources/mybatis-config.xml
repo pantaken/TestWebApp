@@ -8,5 +8,6 @@
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/maximus/dao/xml/BeautyQuestion.xml" />
+		<mapper resource="com/maximus/dao/xml/SubjectSection.xml" />
 	</mappers>
 </configuration>

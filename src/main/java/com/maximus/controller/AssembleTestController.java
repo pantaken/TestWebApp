@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.maximus.db.QueryHelper;
 import com.maximus.service.OfficeWordParserService;
 import com.maximus.util.BeautyOutputWord;
+import com.maximus.util.ConstantUtil;
+import com.maximus.util.IOHttp;
 import com.maximus.util.MixOutputWord;
 /**
  * 组题、组卷
@@ -48,10 +52,15 @@ public class AssembleTestController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/assembletestpaper", method = RequestMethod.GET)
-	public ModelAndView assembletestpaper(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/assembletestpaperbystep", method = RequestMethod.GET)
+	public ModelAndView assembletestpaperbystep(HttpServletRequest request, HttpServletResponse response) {
 		maps.put("lists", officeWordParserService.query());
-		return new ModelAndView("assembletestpaper", maps);
+		return new ModelAndView("assembletestpaperbystep", maps);
+	}
+	@RequestMapping(value = "/assembletestpaperbyauto", method = RequestMethod.GET)
+	public ModelAndView assembletestpaperbyauto(HttpServletRequest request, HttpServletResponse response) {
+		maps.put("lists", officeWordParserService.query());
+		return new ModelAndView("assembletestpaperbyauto", maps);
 	}
 	/**
 	 * 试卷概要分析
@@ -71,9 +80,10 @@ public class AssembleTestController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/downloadassembletest", method = RequestMethod.GET)
-	public ModelAndView downloadassembletest(HttpServletRequest request, HttpServletResponse repoHttpServletResponse) throws Exception {
+	public ModelAndView downloadassembletest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		beautyOutputWord.setOutputFileName("123456789.docx");
 		beautyOutputWord.save();
+		IOHttp.download(response, ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR + "123456789.docx");
 		return null;
 	}
 	/**
@@ -84,9 +94,10 @@ public class AssembleTestController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/downloadmixassembletest", method = RequestMethod.GET)
-	public ModelAndView downloadmixassembletest(HttpServletRequest request, HttpServletResponse repoHttpServletResponse) throws Exception {
+	public ModelAndView downloadmixassembletest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		mixOutputWord.setOutputFileName("abcdefghi.docx");
 		mixOutputWord.save();
+		IOHttp.download(response, ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR + "abcdefghi.docx");
 		return null;
 	}	
 	/**

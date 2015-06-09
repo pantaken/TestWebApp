@@ -1,24 +1,37 @@
-a.list-group-item {
+#tree  a {
+	text-decoration: none;
+}
+#filter a {
+	font-family:'Microsoft YaHei',arial,sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+}
+#filter .active {
+	background-color: #5cb85c;
+	color: #fff;
+	border-radius: 2px;
+}
+#tabmenu a.list-group-item {
 	color: #337ab7;
 	padding-left: 7px;
 }
-a.list-group-item:hover,
-a.list-group-item:focus {
+#tabmenu a.list-group-item:hover,
+#tabmenu a.list-group-item:focus {
   background-color: #f9f9f9;
 }
-a.list-group-item:focus {
+#tabmenu a.list-group-item:focus {
 	border-left: solid 2px #d26911 !important;
 	padding-left: 5px;
 	font-weight: bold;
 	color: #000;
 }
-a.selected {
+#tabmenu a.selected {
 	border-left: solid 2px #d26911 !important;
 	padding-left: 5px;
 	font-weight: bold;
 	color: #000;
 }
-.list-group a:focus{outline:none;}
+#tabmenu a:focus{outline:none;}
 
 .navbar-default {
 	background-color: #f5f5f5;
@@ -31,6 +44,25 @@ a.selected {
 .navbar-default .navbar-nav > li > a:focus {
   color: #337ab7;
   background-color: transparent;
+}
+#assemblemenu.dropdown-menu:before {
+  position: absolute;
+  top: -16px;
+  left: 25px;
+  display: inline-block;
+  content: "";
+  border: 8px solid transparent;
+  border-bottom-color: #ccc;
+  border-bottom-color: rgba(0,0,0,0.15);
+}
+#assemblemenu.dropdown-menu:after{
+	position:absolute;
+	top:-14px;
+	left:26px;
+	display:inline-block;
+	content:"";
+	border:7px solid transparent;
+	border-bottom-color:#fff
 }
 #moremenu.dropdown-menu:before {
   position: absolute;
@@ -84,6 +116,15 @@ span.fieldtip {
   border-top: none 0px;
   background: #f6f6f6;
 }
+a:focus {
+	outline-style: none;
+}
+a:active {
+	outline-style: none;
+}
+input:focus,input:active {
+	outline-style: none;
+}
 .test-list-group-item {
   border-bottom: 1px solid #fff;
   border-top: 1px solid #ddd;
@@ -118,5 +159,13 @@ span.fieldtip {
 }
 .test_callout_red {
 	border-left-color:#ce4844;
+}
+.test-tree-container {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+}
+.test-filter {
+	padding-top: 5px;padding-bottom: 5px;
+	font-size: 12px;
 }
 img{ vertical-align:middle;padding-bottom:5px; }

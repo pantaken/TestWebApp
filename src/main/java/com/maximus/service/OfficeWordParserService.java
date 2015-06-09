@@ -36,6 +36,9 @@ import org.docx4j.wml.PPrBase.NumPr;
 import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.PPrBase.NumPr.Ilvl;
 import org.docx4j.wml.PPrBase.NumPr.NumId;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,20 +70,65 @@ public class OfficeWordParserService {
 	/**
 	 * 解析并持久化beauty word试题
 	 * @param filePath
+	 * @param categorycode 
+	 * @param subjectcode 
 	 * @throws Docx4JException
 	 */
-	public void process(String filePath) throws Docx4JException {
+	public void process(String filePath, String subjectcode, String categorycode) throws Docx4JException {
 		this.wordprocessingMLPackage = Docx4J.load(new File(filePath));
 		MainDocumentPart mainDocumentPart = this.wordprocessingMLPackage.getMainDocumentPart();
 		List<Object> content = mainDocumentPart.getContent();
-		this.processParagraph(content);
+		this.processSelectParagraph(content, subjectcode, categorycode);
+		//this.processBlankParagraph(content, subjectcode, categorycode);
 	}
 
 	/**
-	 * 遍历段落
+	 * 遍历段落（填空题）
 	 * @param content
+	 * @param subjectcode
+	 * @param categorycode
 	 */
-	private final void processParagraph(List<Object> content) {
+	private final void processBlankParagraph(List<Object> content, String subjectcode, String categorycode) {
+		List<Object> question = new ArrayList<Object>();
+		for (Object o : content) {
+			if (o instanceof P) {
+				P p = (P) o;
+				
+				StringBuffer sb = new StringBuffer();
+				for (Object child : p.getContent()) {
+					if (child instanceof R) {
+						R r = (R) child;
+						sb.append(WordParser.processJAXBElementTEXT(this.wordprocessingMLPackage, r.getContent()));
+					} else if (child instanceof JAXBElement<?>) {
+						JAXBElement<?> el = (JAXBElement<?>) child;
+						Class<?> elType = el.getDeclaredType();
+						if (elType.equals(CTOMath.class) || elType.equals(CTOMathPara.class)) {
+							try {
+								sb.append(XSLTransformer.processOMML2MML(WordParser.processOMath(el)));
+							} catch (UnsupportedEncodingException e) {
+								e.printStackTrace();
+							} catch (TransformerException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+				BeautyQuestion bean = new BeautyQuestion();
+				bean.setContent(sb.toString());
+				bean.setSubjectcode(subjectcode);
+				bean.setCategorycode(categorycode);
+				question.add(bean);
+			}
+		}
+		officeWordParserDao.insertBatchBlank(question);
+	}
+	/**
+	 * 遍历段落(选择题)
+	 * @param content
+	 * @param categorycode 
+	 * @param subjectcode 
+	 */
+	private final void processSelectParagraph(List<Object> content, String subjectcode, String categorycode) {
 		List<Object> question = new ArrayList<Object>();
 		List<String> contents = null;
 		String img = "";
@@ -112,11 +160,13 @@ public class OfficeWordParserService {
 				}
 				logger.info(">>>parser mml string : " + sb_mml.toString());
 				String mml = sb_mml.toString();
-				if (!"".equals(mml) && !mml.startsWith("#img#")) {
+				if (!"".equals(mml) && !mml.startsWith("<img")) {
 					if (contents == null) contents = new ArrayList<String>();
 					contents.add(mml);
-				} else if (mml.startsWith("#img#")) {
-					img = mml.split("=")[1];
+				} else if (mml.startsWith("<img")) {
+					Document doc = Jsoup.parse(mml);
+					Elements elements = doc.getElementsByTag("img");
+					img = elements.get(0).attr("src");
 				} else if ("".equals(mml)) {
 					String[] mmls = contents.toArray(new String[contents.size()]);
 					BeautyQuestion bean = new BeautyQuestion();
@@ -125,8 +175,9 @@ public class OfficeWordParserService {
 					bean.setB(mmls[2]);
 					bean.setC(mmls[3]);
 					bean.setD(mmls[4]);
-					bean.setType(2);
 					bean.setImg(img);
+					bean.setSubjectcode(subjectcode);
+					bean.setCategorycode(categorycode);
 					question.add(bean);
 					contents = null;
 				}
@@ -281,7 +332,7 @@ public class OfficeWordParserService {
 				e.printStackTrace();
 			}
 //			return imageUUID;
-			return "<img alt=\"\" src=\""+ConstantUtil.getInstance().getBasePath() + ConstantUtil.getInstance().getContextPath()+"/resources/"+originalImageName+".png\" width=\""+width+"\" height=\""+height+"\" align=\"middle\" />";
+			return "<img alt=\"\" src=\""+ConstantUtil.getInstance().getContextPath()+"/resources/"+originalImageName+".png\" width=\""+width+"\" height=\""+height+"\" align=\"middle\" />";
 		}
 		return "";
 	} 

@@ -32,14 +32,17 @@ public class OfficeWordParserController {
 	 */
 	@RequestMapping(value = "/beautyParser", method = RequestMethod.POST)
 	public ModelAndView beautyParser(HttpServletRequest request, HttpServletResponse response) {
-		String fileName = IOHttp.upload(request);
+		String fileName = IOHttp.upload(request, ConstantUtil.UPLOAD_DIR);
 		String filePath = ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR;
+		
+		String subjectcode = request.getParameter("subjectcode");
+		String categorycode = request.getParameter("categorycode");
 		if (fileName != null)
 			filePath += fileName;
 		else 
 			return null;
 		try {
-			officeWordParserService.process(filePath);
+			officeWordParserService.process(filePath, subjectcode, categorycode);
 		} catch (Docx4JException e) {
 			e.printStackTrace();
 			logger.error("when beauty parser word occurred Exception : " + e);
@@ -54,7 +57,7 @@ public class OfficeWordParserController {
 	 */
 	@RequestMapping(value = "/mixParser", method = RequestMethod.POST)
 	public ModelAndView mixParser(HttpServletRequest request, HttpServletResponse response) {
-		String fileName = IOHttp.upload(request);
+		String fileName = IOHttp.upload(request, ConstantUtil.UPLOAD_DIR);
 		String filePath = ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR;
 		if (fileName != null)
 			filePath += fileName;

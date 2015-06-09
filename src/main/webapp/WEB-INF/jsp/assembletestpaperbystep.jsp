@@ -6,7 +6,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title></title>
+<meta http-equiv="Pragma" content="No-cache">
+<meta http-equiv="Cache-control" content="No-cache">
+<meta http-equiv="Expires" content="0">
+<title>手动组题</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/patchbootstrap.css">
 <!-- 
@@ -16,9 +19,19 @@
 <link href="${pageContext.request.contextPath}/css/non-responsive.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/octicons/octicons.css">
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/mj/MathJax.js?config=default"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/tt/global.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	showProcessingMessages: false,
+	jax: ["input/MathML","output/CommonHTML"],
+	extensions: ["mml2jax.js"],
+	showMathMenu: false,
+	showMathMenuMSIE: false
+});
+</script>
 <script type="text/javascript">
 $(function() {
 	$('[data-tip="tooltip"]').tooltip({container: 'body', animation : false});
@@ -36,13 +49,19 @@ $(function() {
 		<form class="navbar-form navbar-left" role="search" style="padding-top: 3px;">
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search" style="width: 360px; height: 28px;padding-left:30px;">
-				<span class="octicon octicon-search subnav-search-icon"></span>
+				<span class="octicon octicon-search subnav-search-icon" />
 			</div>
 		</form>
 		<!-- menu -->
         <div id="navbar">
           <ul class="nav navbar-nav">
-            <li><a href="${pageContext.request.contextPath}/assembletestpaper">组题</a></li>
+            <li class="dropdown">
+            	<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" data-placement="bottom" >组题<span class="caret"></span></a>
+           		<ul id="assemblemenu" class="dropdown-menu" role="menu" aria-labelledby="drop123">
+                	<li role="presentation"><a href="${pageContext.request.contextPath}/assembletestpaperbystep"> 手动组题</a></li>
+                	<li role="presentation"><a href="${pageContext.request.contextPath}/assembletestpaperbyauto"> 系统组题</a></li>
+				</ul>
+			</li>
             <li><a href="#about">训练</a></li>
             <li><a href="#contact">博客</a></li>
             <li class="dropdown">
@@ -77,8 +96,8 @@ $(function() {
 <!-- container -->    
 <div class="container">
 <!-- left -->
-<div class="col-xs-3" >
-<div class="panel panel-default">
+<div class="col-xs-3">
+<div class="panel panel-default" style="position: fixed; width: 200px;">
   <div class="panel-heading">
     <h6 class="panel-title"><sec:authentication property="principal.username"/></h6>
   </div>
@@ -107,16 +126,23 @@ $(function() {
 		<c:forEach var="BeautyQuestion" items="${lists}" varStatus="status">
 			<li class="list-group-item test-list-group-item">
 				${status.index + 1}.  <c:out value="${BeautyQuestion.content}" escapeXml="false"/><br/>
+				<c:if test="${not empty BeautyQuestion.img }">
+					<img alt="" src="${BeautyQuestion.img}"><br/>
+				</c:if>				
+				<c:if test="${BeautyQuestion.categorycode eq '1d3805b9-fcf2-4c73-b602-2acb49080963'}">				
 				（A）   <c:out value="${BeautyQuestion.a}" escapeXml="false"/><br/>
 				（B）   <c:out value="${BeautyQuestion.b}" escapeXml="false"/><br/>
 				（C）   <c:out value="${BeautyQuestion.c}" escapeXml="false"/><br/>
 				（D）   <c:out value="${BeautyQuestion.d}" escapeXml="false"/><br/>
+				</c:if>
 			</li>
 			
 			<span class="fieldtip">
-				<a href="javascript:void(0)" onclick="" class="tool" data-tip="tooltip" data-placement="right" title="下载"><span class="octicon octicon-cloud-download"></span></a>
-				<a href="javascript:void(0)" onclick="" class="tool" data-tip="tooltip" data-placement="right" title="查看解析"><span class="octicon octicon-eye"></span></a>
-				<a href='javascript:void(0)' onclick='javascript:Obj.switchfavorite(<c:out value="${BeautyQuestion.id}" />,this);' class="tool" data-tip="tooltip" data-placement="right" title="加入收藏"><span class="octicon octicon-plus"></span></a>
+				<div style="float: right;">
+					<a href="javascript:void(0)" onclick="" class="tool" data-tip="tooltip" data-placement="right" title="下载"><span class="octicon octicon-cloud-download"></span></a>
+					<a href="javascript:void(0)" onclick="" class="tool" data-tip="tooltip" data-placement="right" title="查看解析"><span class="octicon octicon-eye"></span></a>
+					<a href='javascript:void(0)' onclick='javascript:Obj.switchfavorite(<c:out value="${BeautyQuestion.id}" />,this);' class="tool" data-tip="tooltip" data-placement="right" title="加入收藏"><span class="octicon octicon-plus"></span></a>
+				</div>
 			</span>
 		</c:forEach>	
 	</ul>
@@ -144,13 +170,4 @@ $(function() {
 </div><!-- foot end -->
 </div>
 </body>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-	showProcessingMessages: false,
-	jax: ["input/MathML","output/CommonHTML"],
-	extensions: ["mml2jax.js"],
-	showMathMenu: false,
-	showMathMenuMSIE: false
-});
-</script>
 </html>

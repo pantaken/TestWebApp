@@ -8,9 +8,13 @@ public class BeautyQuestion {
 	 */
 	private String content;
 	/**
-	 * 试题类型
+	 * 课程编码
 	 */
-	private int type;
+	private String subjectcode;
+	/**
+	 * 试题类型(题目类型编码)
+	 */
+	private String categorycode;
 	/**
 	 * 备选答案A、B、C、D
 	 */
@@ -32,11 +36,17 @@ public class BeautyQuestion {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getType() {
-		return type;
+	public String getSubjectcode() {
+		return subjectcode;
 	}
-	public void setType(int type) {
-		this.type = type;
+	public void setSubjectcode(String subjectcode) {
+		this.subjectcode = subjectcode;
+	}
+	public String getCategorycode() {
+		return categorycode;
+	}
+	public void setCategorycode(String categorycode) {
+		this.categorycode = categorycode;
 	}
 	public String getA() {
 		return a;

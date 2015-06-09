@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.maximus.util.ConstantUtil;
 import com.maximus.util.IOHttp;
 
 @Controller
@@ -25,7 +26,7 @@ public class IOHttpController {
 	@RequestMapping(value = {"/upload"}, method = RequestMethod.POST)
 	public Map<String, Object> upload(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("upload a file...");
-		if (IOHttp.upload(request) != null) {
+		if (IOHttp.upload(request, ConstantUtil.UPLOAD_DIR) != null) {
 			map.put("success", true);
 		} else {
 			map.put("success", false);

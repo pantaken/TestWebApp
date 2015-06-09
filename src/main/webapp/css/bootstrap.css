@@ -3891,7 +3891,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eee;
+  /* background-color: #eee; */
 }
 .nav > li.disabled > a {
   color: #777;
@@ -3928,7 +3928,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li > a {
   margin-right: 2px;
   line-height: 1.42857143;
-  border: 1px solid transparent;
+  /* border: 1px solid transparent; */
   border-radius: 4px 4px 0 0;
 }
 .nav-tabs > li > a:hover {

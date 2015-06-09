@@ -27,6 +27,7 @@ public class ConstantUtil {
 	public final static int MAX_FILE_SIZE = 1024*1024*10;
 	public final static String SEPARATOR = System.getProperty("file.separator");
 	public static final String UPLOAD_DIR = "resources/";
+	public static final String TEMPLATE_DIR = "template/";
 	
 	/**
 	 * var
@@ -68,6 +69,6 @@ public class ConstantUtil {
 		this.ctx = ctx;
 	}
 	public String getBasePath() {
-		return "http://localhost";
+		return "http://localhost:8080";
 	}
 }

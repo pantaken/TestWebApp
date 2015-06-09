@@ -44,5 +44,6 @@ Array.prototype.removeObj = function(b) {
 			$parent.attr('data-original-title','加入收藏');
 			Obj.favs.removeObj(id);
 		}
+		$.cookie('TEST_COLLECTIONS',Obj.favs,{expired : 7, path : '/',raw: false});
 	};
 })();

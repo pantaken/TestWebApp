@@ -19,6 +19,7 @@
      <security:http pattern="/fonts/**" security="none" />
      <security:http pattern="/resources/**" security="none" />
      <security:http pattern="/login.jsp" security="none" />
+     <security:http pattern="/pjax.jsp" security="none" />
 
 
 	<security:http auto-config='true'>

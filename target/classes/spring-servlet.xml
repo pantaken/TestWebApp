@@ -77,4 +77,22 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
 		<property name="contentType" value="text/html;charset=UTF-8"/>
 	</bean>	
+	
+	<!-- 事务 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<tx:advice id="TransactionAdvice" transaction-manager="transactionManager">
+		<!-- 以这些开头命名的方法执行事务 -->
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="select*" propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="transactOperation" expression="execution(* com.maximus.dao.*.*(..))" />
+		<aop:advisor advice-ref="TransactionAdvice" pointcut-ref="transactOperation" />
+	</aop:config>	
 </beans>

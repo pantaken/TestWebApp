@@ -15,8 +15,8 @@
 <link href="${pageContext.request.contextPath}/css/non-responsive.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/octicons/octicons.css">
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/tt/global.js"></script>
 <script type="text/javascript">
 $(function() {
 	$('[data-tip="tooltip"]').tooltip({container: 'body', animation : false});
@@ -32,6 +32,8 @@ $(function() {
 		});		
 	});
 	*/
+	var selected_ids = $.cookie('TEST_COLLECTIONS');
+	$("#selected_ids").html(selected_ids);
 });
 </script>
 </head>
@@ -51,7 +53,13 @@ $(function() {
 		<!-- menu -->
         <div id="navbar">
           <ul class="nav navbar-nav">
-            <li><a href="${pageContext.request.contextPath}/assembletestpaper">组题</a></li>
+            <li class="dropdown">
+            	<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" data-placement="bottom" >组题<span class="caret"></span></a>
+           		<ul id="assemblemenu" class="dropdown-menu" role="menu" aria-labelledby="drop123">
+                	<li role="presentation"><a href="${pageContext.request.contextPath}/assembletestpaperbystep"> 手动组题</a></li>
+                	<li role="presentation"><a href="${pageContext.request.contextPath}/assembletestpaperbyauto"> 系统组题</a></li>
+				</ul>
+			</li>
             <li><a href="#about">训练</a></li>
             <li><a href="#contact">博客</a></li>
             <li class="dropdown">
@@ -113,8 +121,9 @@ $(function() {
     <h3 class="panel-title">收藏列表</h3>
   </div>
   <div class="panel-body">
-	<!-- action="downloadassembletest" -->
-  	<form action="${pageContext.request.contextPath}/downloadmixassembletest" method="get">
+  	<li id="selected_ids"></li>
+	<!-- action="downloadassembletest/downloadmixassembletest" -->
+  	<form action="${pageContext.request.contextPath}/downloadassembletest" method="get">
 		<button type="submit" class="btn btn-default" id="filedownloadbtn" data-loading-text="下载中..." autocomplete="off">下载试卷</button>
 	</form>
   </div>		

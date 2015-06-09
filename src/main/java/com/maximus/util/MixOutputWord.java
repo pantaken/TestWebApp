@@ -76,14 +76,13 @@ public class MixOutputWord {
 				int index = x==0 ? 0 : s.indexOf(elements.get(x - 1).outerHtml()) + elements.get(x - 1).outerHtml().length();
 				int end = x==elements.size() ? s.length() : s.indexOf(elements.get(x).outerHtml());
 				if (x > 0 && !"".equals(elements.get(x - 1).toString())) {
-					URL fileurl = new URL(elements.get(x - 1).attr("src"));
+					URL fileurl = new URL(ConstantUtil.getInstance().getBasePath() + elements.get(x - 1).attr("src"));
 					BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createLinkedImagePart(wordprocessingMLPackage, fileurl);
 					int docPrId = 1;
 					int cNvPrId = 2;
-					long cx, cy;
 					ImageSize size = imagePart.getImageInfo().getSize();
 					Dimension dPx = size.getDimensionPx();
-					Inline inline = imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, UnitsOfMeasurement.twipToEMU( dPx.getWidth()*3), UnitsOfMeasurement.twipToEMU(dPx.getHeight()*3), false);					
+					Inline inline = imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);					
 					this.addInlineImageToParagraph(p, inline);					
 					
 //					mainDocumentPart.addObject(this.createNumberedParagraph(1, 6, elements.get(x - 1).toString()));
@@ -207,7 +206,7 @@ public class MixOutputWord {
 	 * @return RPr
 	 */
 	private RPr getRPr() {
-		return getRPr(FONT_YAHEI, "000000", "30", STHint.EAST_ASIA, true);
+		return getRPr(FONT_SONGTI, "000000", "22", STHint.EAST_ASIA, false);
 	}
 	/**
 	 * 获取设置的字体样式
@@ -333,5 +332,5 @@ public class MixOutputWord {
 		    + "<w:abstractNumId w:val=\"0\"/>"
 		 + "</w:num>"
 		+ "</w:numbering>";	
-	private static final String FONT_YAHEI = "宋体";
+	private static final String FONT_SONGTI = "宋体";
 }

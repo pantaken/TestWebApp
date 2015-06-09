@@ -3,9 +3,10 @@
 <mapper namespace="com.maximus.dao.IOfficeWordParserDao">
 
 	<resultMap type="com.maximus.bean.BeautyQuestion" id="map1">
-		<result column="id" property="id"/>
+		<id column="id" property="id"/>
 		<result column="content" property="content"/>
-		<result column="type" property="type"/>
+		<result column="subjectcode" property="subjectcode"/>
+		<result column="categorycode" property="categorycode"/>
 		<result column="selectA" property="a"/>
 		<result column="selectB" property="b"/>
 		<result column="selectC" property="c"/>
@@ -14,18 +15,25 @@
 	</resultMap>
 	
 	<insert id="insert" parameterType="Object">
-		INSERT INTO pub_question_content(content,`type`) VALUES (#{content},#{type})
+		INSERT INTO pub_question_content(content,`categorycode`) VALUES (#{content},#{categorycode})
 	</insert>
 	
 	<insert id="insertBatch" parameterType="java.util.List">
-		INSERT INTO pub_question_content(content,`type`,selectA,selectB,selectC,selectD,img) VALUES 
+		INSERT INTO pub_question_content(content,`subjectcode`,categorycode,selectA,selectB,selectC,selectD,img) VALUES 
 		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.content},#{item.type},#{item.a},#{item.b},#{item.c},#{item.d},#{item.img})
+			(#{item.content},#{item.subjectcode},#{item.categorycode},#{item.a},#{item.b},#{item.c},#{item.d},#{item.img})
 		</foreach>
 	</insert>
 	
+	<insert id="insertBatchBlank" parameterType="java.util.List">
+		INSERT INTO pub_question_content(content,`subjectcode`,categorycode) VALUES 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.content},#{item.subjectcode},#{item.categorycode})
+		</foreach>
+	</insert>	
+	
 	<select id="select" resultMap="map1">
-		SELECT id, content,`type`,selectA,selectB,selectC,selectD,img FROM pub_question_content
+		SELECT id, content,subjectcode,`categorycode`,selectA,selectB,selectC,selectD,img FROM pub_question_content
 	</select>
 </mapper>
  

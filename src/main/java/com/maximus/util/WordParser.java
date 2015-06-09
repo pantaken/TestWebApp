@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.commons.lang.StringUtils;
 import org.docx4j.XmlUtils;
 import org.docx4j.dml.Graphic;
 import org.docx4j.dml.picture.Pic;
@@ -35,7 +36,7 @@ public class WordParser {
 					sb.append(processText((Text) elem.getValue()));
 				} else if (elemType.equals(Drawing.class)) {
 					Drawing drawing = (Drawing) elem.getValue();				
-					sb.append("#img#=" + processDrawing(wordprocessingMLPackage, drawing));
+					sb.append("<img alt=\"\" src=\""+ConstantUtil.getInstance().getContextPath()+"/resources/"+processDrawing(wordprocessingMLPackage, drawing)+"\" align=\"middle\" />");
 				}
 			}
 		}
@@ -61,12 +62,20 @@ public class WordParser {
 			Inline inline = (Inline) o;
 			Graphic graphic = inline.getGraphic();
 			Pic pic = graphic.getGraphicData().getPic();
+			String fileName = pic.getNvPicPr().getCNvPr().getName();
+			String newFileName = RandomToolkit.getId(false);
 			try {
-				saveImage(wordprocessingMLPackage, graphic, "F:/webapps/docx4j/resource/" + pic.getNvPicPr().getCNvPr().getName() + ".png");
+				if (fileName.endsWith(".png") || fileName.endsWith(".jpg")) {
+					saveImage(wordprocessingMLPackage, graphic, ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR + newFileName);
+					return newFileName;
+				} else {
+					/*StringUtils.deleteWhitespace(fileName)*/
+					saveImage(wordprocessingMLPackage, graphic, ConstantUtil.getInstance().getRealPath() + ConstantUtil.UPLOAD_DIR + newFileName + ".png");
+					return newFileName + ".png";
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return pic.getNvPicPr().getCNvPr().getName() + ".png";
 		}
 		return "";
 	}	

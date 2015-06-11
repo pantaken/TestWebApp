@@ -2,7 +2,10 @@ package com.maximus.util;
 
 import java.awt.Dimension;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -19,6 +22,7 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.xmlgraphics.image.loader.ImageSize;
+import org.docx4j.Docx4J;
 import org.docx4j.XmlUtils;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
@@ -72,7 +76,8 @@ public class BeautyOutputWord {
 	 * @throws Exception
 	 */
 	public void save() throws Exception {
-		WordprocessingMLPackage wordprocessingMLPackage = WordprocessingMLPackage.createPackage();
+//		WordprocessingMLPackage wordprocessingMLPackage = WordprocessingMLPackage.createPackage();
+		WordprocessingMLPackage wordprocessingMLPackage = Docx4J.load(new File("F:\\workspace\\TestWebApp\\src\\main\\webapp\\template\\Docx4j.docx"));
 		MainDocumentPart mainDocumentPart = wordprocessingMLPackage.getMainDocumentPart();
 		NumberingDefinitionsPart ndp = this.getNumbering();
 		if (ndp != null) {
@@ -212,8 +217,10 @@ public class BeautyOutputWord {
 			} else if (nexStr.startsWith("<img")) {
 				Document doc = Jsoup.parse(nexStr);
 				Elements elements = doc.getElementsByTag("img");
-				URL fileurl = new URL(ConstantUtil.getInstance().getBasePath() + elements.get(0).attr("src"));
-				BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createLinkedImagePart(wordprocessingMLPackage, fileurl);
+//				URL fileurl = new URL(ConstantUtil.getInstance().getBasePath() + elements.get(0).attr("src"));
+//				BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createLinkedImagePart(wordprocessingMLPackage, fileurl);
+				String path = "F:/webapps" + elements.get(0).attr("src");
+				BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createImagePart(wordprocessingMLPackage, convertImageToByteArray(new File(path)));
 				int docPrId = 1;
 				int cNvPrId = 2;
 				ImageSize size = imagePart.getImageInfo().getSize();
@@ -396,6 +403,58 @@ public class BeautyOutputWord {
 		 * 将OMML输入流转换为JAXBElement对象
 		 */
 		wmlP.getContent().add(XmlUtils.unmarshal(inputStream));
+	}
+	/**
+	 * 文件转字节数组
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */	
+	private static byte[] convertImageToByteArray(File file) throws IOException {
+		InputStream is = new FileInputStream(file);
+		long length = file.length();
+		if (length > Integer.MAX_VALUE) {
+			System.out.println("文件大小超过限制");
+		}
+		byte[] bytes = new byte[is.available()];
+		int offset = 0;
+		int len = 0;
+		//从文件输入流is中读取bytes.leng - offset个字节到起始偏移量为offset的缓冲区bytes中,并返读入缓冲区中的字节总数
+		while (offset < bytes.length && (len = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+			offset += len;
+		}
+		if (offset < bytes.length) {
+			System.out.println("不能完全读取文件内容");
+		}
+		is.close();
+		return bytes;
+	}
+	/**
+	 * 文件转字节数组
+	 * @param file
+	 * @return
+	 */
+	private static byte[] convertToByteArray(File file) {
+		byte[] byteArray = null;
+		if (file == null) {
+			return null;
+		}
+		try {
+			InputStream is = new FileInputStream(file);
+			ByteArrayOutputStream out = new ByteArrayOutputStream(4094);
+			byte[] b = new byte[1024];
+			int len = 0;
+			while((len = is.read(b)) != -1) {
+				out.write(b, 0, len);
+			}
+			is.close();
+			out.close();
+			byteArray = out.toByteArray();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return byteArray;
 	}
 	private static final String initialNumbering = "<w:numbering xmlns:ve=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\">"
 		    + "<w:abstractNum w:abstractNumId=\"0\">"
